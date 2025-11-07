@@ -11,7 +11,7 @@ import (
 )
 
 func setup(arg1, arg2 string) {
-	if arg1 != "new" && arg1 != "version" && arg1 != "help" {
+	if arg1 != "new" && arg1 != "version" && arg1 != "help" && arg1 != "new-full" {
 		err := godotenv.Load()
 		if err != nil {
 			exitGracefully(err)
@@ -72,7 +72,7 @@ func showHelp() {
 	make session          - creates a table in the database as a session store
 	make mail <name>      - creates two starter mail templates in the mail directory
 	new <name>            - creates a new app with the skeleton template
-	new <name> full       - creates a new app with the full template 
+	new-full <name>       - creates a new app with the full template 
 	
 	`)
 }
