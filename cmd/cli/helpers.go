@@ -71,6 +71,8 @@ func showHelp() {
 	make model <name>     - creates a new model in the data directory
 	make session          - creates a table in the database as a session store
 	make mail <name>      - creates two starter mail templates in the mail directory
+	new <name>            - creates a new app with the skeleton template
+	new <name> full       - creates a new app with the full template 
 	
 	`)
 }
