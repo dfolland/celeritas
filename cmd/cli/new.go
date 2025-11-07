@@ -15,7 +15,7 @@ import (
 
 var appURL string
 
-func doNew(appName string) {
+func doNew(appName, appType string) {
 	appName = strings.ToLower(appName)
 	appURL = appName
 
@@ -31,7 +31,7 @@ func doNew(appName string) {
 	color.Green("\tCloning repository...")
 	_, err := git.PlainClone("./"+appName, false, &git.CloneOptions{
 		//URL:      "git@github.com:dfolland/celeritas-app.git",
-		URL:      "https://github.com/dfolland/celeritas-app.git",
+		URL:      fmt.Sprintf("https://github.com/dfolland/%s.git", appType),
 		Progress: os.Stdout,
 		Depth:    1,
 	})

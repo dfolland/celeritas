@@ -27,9 +27,15 @@ func main() {
 
 	case "new":
 		if arg2 == "" {
-			exitGracefully(errors.New("new requires an applicaiton name"))
+			exitGracefully(errors.New("new requires an application name"))
 		}
-		doNew(arg2)
+		appType := "celeritas-app"
+		if arg3 == "full" {
+			appType = "celeritas-full"
+		}
+			
+		color.Yellow("using template type", appType)
+		doNew(arg2, appType)
 
 	case "version":
 		color.Yellow("Application version: " + version)
