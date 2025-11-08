@@ -20,7 +20,5 @@ build:
 # windows users should delete the line above this one, and use the line below instead (uncommented)
 #@go build -o dist/celeritas.exe ./cmd/cli
 
-release: build
-	@echo "Builds ./dist/celeritas and moves to ~/Downloads"
-	@rm -f ~/Downloads/celeritas
-	@mv ./dist/celeritas ~/Downloads
+install_cli:
+	@go build -o ~/go/bin/celeritas -ldflags '-s -w' ./cmd/cli
