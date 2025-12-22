@@ -19,6 +19,3 @@ build:
 	@go build -o ./dist/celeritas ./cmd/cli
 # windows users should delete the line above this one, and use the line below instead (uncommented)
 #@go build -o dist/celeritas.exe ./cmd/cli
-
-install_cli:
-	@go build -o ~/go/bin/celeritas -ldflags '-s -w' ./cmd/cli

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -11,7 +12,7 @@ import (
 )
 
 func setup(arg1, arg2 string) {
-	if arg1 != "new" && arg1 != "version" && arg1 != "help" && arg1 != "new-full" {
+	if arg1 != "new" && arg1 != "version" && arg1 != "help" {
 		err := godotenv.Load()
 		if err != nil {
 			exitGracefully(err)
@@ -57,22 +58,34 @@ func getDSN() string {
 	return "mysql://" + cel.BuildDSN()
 }
 
+func checkForDB() {
+	dbType := cel.DB.DataType
+
+	if dbType == "" {
+		exitGracefully(errors.New("no database connection provided in .env"))
+	}
+
+	if !fileExists(cel.RootPath + "/config/database.yml"){
+		exitGracefully(errors.New("config/database.yml does not exist"))
+	}
+}
+
 func showHelp() {
 	color.Yellow(`Available commands:
 
-	help                  - show the help commands
-	version               - print application version
-	migrate               - runs all up migrations that have not been run previously
-	migrate down          - reverses the most recent migration
-	migrate reset         - runs all down migrations in reverse order, and then all up migrations
-	make migration <name> - creates two new up and down migrations in the migrations folder
-	make auth             - creates and runs migrations for authentication tables, and creates models and middleware
-	make handler <name>   - creates a stub handler in the handlers directory
-	make model <name>     - creates a new model in the data directory
-	make session          - creates a table in the database as a session store
-	make mail <name>      - creates two starter mail templates in the mail directory
-	new <name>            - creates a new app with the skeleton template
-	new-full <name>       - creates a new app with the full template 
+	help                           - show the help commands
+    down                           - put the server into maintenance mode
+    up                             - take the server out of maintenance mode
+	version                        - print application version
+	migrate                        - runs all up migrations that have not been run previously
+	migrate down                   - reverses the most recent migration
+	migrate reset                  - runs all down migrations in reverse order, and then all up migrations
+	make migration <name> <format> - creates two new up and down migrations in the migrations folder; format=sql/fizz (default fizz)
+	make auth                      - creates and runs migrations for authentication tables, and creates models and middleware
+	make handler <name>            - creates a stub handler in the handlers directory
+	make model <name>              - creates a new model in the data directory
+	make session                   - creates a table in the database as a session store
+	make mail <name>               - creates two starter mail templates in the mail directory
 	
 	`)
 }

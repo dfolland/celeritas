@@ -15,7 +15,7 @@ import (
 
 var appURL string
 
-func doNew(appName, appType string) {
+func doNew(appName string) {
 	appName = strings.ToLower(appName)
 	appURL = appName
 
@@ -29,10 +29,9 @@ func doNew(appName, appType string) {
 
 	// git clone the skeleton application
 	color.Green("\tCloning repository...")
-	color.Green("\tApp type is " + appType + "...")
 	_, err := git.PlainClone("./"+appName, false, &git.CloneOptions{
-		//URL:      "git@github.com:dfolland/celeritas-app.git",
-		URL:      fmt.Sprintf("https://github.com/dfolland/%s.git", appType),
+		// URL: "git@github.com:dfolland/celeritas-app.git",
+		URL:      "https://github.com/dfolland/celeritas-app.git",
 		Progress: os.Stdout,
 		Depth:    1,
 	})
@@ -125,7 +124,14 @@ func doNew(appName, appType string) {
 
 	// run go mod tidy in the project directory
 	color.Yellow("\tRunning go mod tidy...")
-	cmd := exec.Command("go", "mod", "tidy")
+
+	cmd := exec.Command("go", "get", "github.com/dfolland/celeritas")
+	err = cmd.Start()
+	if err != nil {
+		exitGracefully(err)
+	}
+
+	cmd = exec.Command("go", "mod", "tidy")
 	err = cmd.Start()
 	if err != nil {
 		exitGracefully(err)
